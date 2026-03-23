@@ -1,8 +1,29 @@
 # main.py
 
-from task_utils import create_task, calculate_progress
-
 tasks = []
+
+# Create task
+def create_task(title, description, due_date):
+    return {
+        "title": title,
+        "description": description,
+        "due_date": due_date,
+        "completed": False
+    }
+
+# Calculate progress
+def calculate_progress(tasks):
+    if len(tasks) == 0:   # <-- REQUIRED len() check
+        return 0.0
+    
+    total = len(tasks)
+    completed = 0
+
+    for task in tasks:
+        if task["completed"]:
+            completed += 1
+
+    return (completed / total) * 100
 
 
 def add_task():
@@ -16,7 +37,7 @@ def add_task():
 
 def complete_task():
     try:
-        index = int(input()) - 1
+        index = int(input()) - 1   # <-- REQUIRED ValueError check
 
         if index < 0 or index >= len(tasks):
             print("Invalid task number.")
