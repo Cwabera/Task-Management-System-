@@ -1,95 +1,66 @@
 # task_manager.py
 
+from task_utils import *
+
 tasks = []
 
-# Add a new task
+
 def add_task():
-    title = input("Enter task title: ").strip()
+    title = input("Enter task title: ")
     
-    if not title:
-        print("Task title cannot be empty.")
+    if not validate_title(title):
+        print("Invalid title.")
         return
     
-    task = {
-        "title": title,
-        "completed": False
-    }
-    
-    tasks.append(task)
-    print("Task added successfully!")
+    tasks.append(create_task(title))
+    print("Task added!")
 
 
-# View all tasks
 def view_tasks():
     if not tasks:
-        print("No tasks available.")
+        print("No tasks.")
         return
     
-    print("\nAll Tasks:")
-    for i, task in enumerate(tasks, start=1):
-        status = "✓" if task["completed"] else "✗"
-        print(f"{i}. {task['title']} [{status}]")
+    for i, task in enumerate(tasks, 1):
+        print(format_task(task, i))
 
 
-# Mark task as complete
 def complete_task():
     view_tasks()
     
-    if not tasks:
-        return
-    
     try:
-        choice = int(input("Enter task number to mark complete: "))
+        index = int(input("Enter task number: ")) - 1
         
-        if 1 <= choice <= len(tasks):
-            tasks[choice - 1]["completed"] = True
-            print("Task marked as complete!")
+        if 0 <= index < len(tasks):
+            tasks[index]["completed"] = True
+            print("Task completed!")
         else:
-            print("Invalid task number.")
+            print("Invalid number.")
     
     except ValueError:
-        print("Please enter a valid number.")
+        print("Enter a valid number.")
 
 
-# View pending tasks
-def view_pending_tasks():
-    pending = [task for task in tasks if not task["completed"]]
+def view_pending():
+    pending = get_pending_tasks(tasks)
     
     if not pending:
-        print("No pending tasks 🎉")
+        print("No pending tasks.")
         return
     
-    print("\nPending Tasks:")
-    for i, task in enumerate(pending, start=1):
-        print(f"{i}. {task['title']}")
+    for i, task in enumerate(pending, 1):
+        print(format_task(task, i))
 
 
-# Track progress
-def track_progress():
-    if not tasks:
-        print("No tasks to track.")
-        return
-    
-    total = len(tasks)
-    completed = sum(1 for task in tasks if task["completed"])
-    
-    progress = (completed / total) * 100
-    
-    print(f"Progress: {completed}/{total} tasks completed ({progress:.2f}%)")
+def progress():
+    completed, total, percent = calculate_progress(tasks)
+    print(f"{completed}/{total} completed ({percent:.2f}%)")
 
 
-# Menu system
 def menu():
     while True:
-        print("\n==== Task Manager ====")
-        print("1. Add Task")
-        print("2. View Tasks")
-        print("3. Complete Task")
-        print("4. View Pending Tasks")
-        print("5. Track Progress")
-        print("6. Exit")
-        
-        choice = input("Choose an option: ")
+        print("\n1.Add 2.View 3.Complete 4.Pending 5.Progress 6.Exit")
+        choice = input("Choose: ")
         
         if choice == "1":
             add_task()
@@ -98,16 +69,14 @@ def menu():
         elif choice == "3":
             complete_task()
         elif choice == "4":
-            view_pending_tasks()
+            view_pending()
         elif choice == "5":
-            track_progress()
+            progress()
         elif choice == "6":
-            print("Goodbye!")
             break
         else:
-            print("Invalid choice. Try again.")
+            print("Invalid choice.")
 
 
-# Run the program
 if __name__ == "__main__":
     menu()

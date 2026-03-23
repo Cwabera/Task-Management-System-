@@ -1,32 +1,35 @@
 # grades.py
 
-students = {
-    "John": 70,
-    "Kelvin": 85,
-    "Mercy": 60
-}
+def get_student_data():
+    students = {}
+    
+    n = int(input("Enter number of students: "))
+    
+    for _ in range(n):
+        name = input("Enter student name: ")
+        score = int(input("Enter score: "))
+        students[name] = score
+    
+    return students
 
-# Calculate average score
+
 def calculate_average(data):
-    total = sum(data.values())
-    average = total / len(data)
-    return average
+    return sum(data.values()) / len(data)
 
-# Find top student
+
 def top_student(data):
     name = max(data, key=data.get)
-    score = data[name]
-    return name.upper(), score
+    return name.upper(), data[name]
 
-# Display results
+
 def display_results(data):
     avg = calculate_average(data)
-    top_name, top_score = top_student(data)
+    name, score = top_student(data)
     
     print(f"Average Score: {avg:.2f}")
-    print(f"Top Student: {top_name} ({top_score})")
+    print(f"Top Student: {name} ({score})")
 
 
-# Run program
 if __name__ == "__main__":
+    students = get_student_data()
     display_results(students)
