@@ -12,10 +12,10 @@ def create_task(title, description, due_date):
     }
 
 # Calculate progress as a percentage
-def calculate_progress(tasks):
-    if len(tasks) == 0:  # must use len() for grader
+def calculate_progress():
+    if len() == 0:  # must use len() for grader
         return 0.0
-    total = len(tasks)
+    total = len()
     completed = 0
     for task in tasks:
         if task["completed"]:
